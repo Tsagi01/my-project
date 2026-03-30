@@ -36,7 +36,7 @@ export default function ProductCard({
       </p>
       <p className="mb-4 text-sm text-slate-800">Stock: {product.stock}</p>
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-center gap-2">
         <button
           type="button"
           onClick={handleDecrease}
@@ -46,7 +46,7 @@ export default function ProductCard({
           -
         </button>
 
-        <span className="min-w-10 text-center text-sm font-semibold text-slate-900">
+        <span className="min-w-8 text-center text-sm font-semibold text-slate-900">
           {quantityInBasket}
         </span>
 
