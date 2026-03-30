@@ -8,9 +8,24 @@ export default function ProductCard({
 }: Readonly<{
   product: Product;
 }>) {
-  const { addToBasket, getItemQuantity } = useBasket();
+  const {
+    addToBasket,
+    decreaseQuantity,
+    getItemQuantity,
+    removeFromBasket,
+  } = useBasket();
   const quantityInBasket = getItemQuantity(product.id);
   const hasReachedStockLimit = quantityInBasket >= product.stock;
+
+  function handleDecrease() {
+    // If there is only one item left, remove it completely.
+    if (quantityInBasket <= 1) {
+      removeFromBasket(product.id);
+      return;
+    }
+
+    decreaseQuantity(product.id);
+  }
 
   return (
     <article className="rounded-2xl border border-slate-300 bg-white p-5 shadow-sm">
@@ -21,15 +36,30 @@ export default function ProductCard({
       </p>
       <p className="mb-4 text-sm text-slate-800">Stock: {product.stock}</p>
 
-      {/* This button adds one item to the basket each time it is clicked. */}
-      <button
-        type="button"
-        onClick={() => addToBasket(product)}
-        disabled={hasReachedStockLimit}
-        className="w-full rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:bg-slate-200 disabled:text-slate-500"
-      >
-        Add to Basket
-      </button>
+      <div className="flex items-center justify-between gap-4">
+        <button
+          type="button"
+          onClick={handleDecrease}
+          disabled={quantityInBasket === 0}
+          className="flex h-12 w-32 items-center justify-center rounded-2xl bg-slate-200 text-xl font-semibold text-slate-600 hover:bg-slate-300 disabled:text-slate-400"
+        >
+          -
+        </button>
+
+        <span className="min-w-8 text-center text-xl font-semibold text-slate-900">
+          {quantityInBasket}
+        </span>
+
+        {/* This button adds one item to the basket each time it is clicked. */}
+        <button
+          type="button"
+          onClick={() => addToBasket(product)}
+          disabled={hasReachedStockLimit}
+          className="flex h-12 w-32 items-center justify-center rounded-2xl bg-blue-700 text-xl font-semibold text-white hover:bg-blue-800 disabled:bg-slate-200 disabled:text-slate-400"
+        >
+          +
+        </button>
+      </div>
 
       <p className="mt-3 text-sm text-slate-800">In basket: {quantityInBasket}</p>
 

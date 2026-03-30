@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SiteHeader from "./components/site-header";
 import { BasketProvider } from "./context/basket-context";
+import { StudentProvider } from "./context/student-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <BasketProvider>
-          <SiteHeader />
-          {children}
-        </BasketProvider>
+        <StudentProvider>
+          <BasketProvider>
+            <SiteHeader />
+            {children}
+          </BasketProvider>
+        </StudentProvider>
       </body>
     </html>
   );
