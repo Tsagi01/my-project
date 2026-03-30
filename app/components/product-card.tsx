@@ -41,12 +41,12 @@ export default function ProductCard({
           type="button"
           onClick={handleDecrease}
           disabled={quantityInBasket === 0}
-          className="flex h-12 w-32 items-center justify-center rounded-2xl bg-slate-200 text-xl font-semibold text-slate-600 hover:bg-slate-300 disabled:text-slate-400"
+          className="rounded-lg bg-slate-200 px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-300 disabled:text-slate-500"
         >
           -
         </button>
 
-        <span className="min-w-8 text-center text-xl font-semibold text-slate-900">
+        <span className="min-w-10 text-center text-sm font-semibold text-slate-900">
           {quantityInBasket}
         </span>
 
@@ -55,7 +55,7 @@ export default function ProductCard({
           type="button"
           onClick={() => addToBasket(product)}
           disabled={hasReachedStockLimit}
-          className="flex h-12 w-32 items-center justify-center rounded-2xl bg-blue-700 text-xl font-semibold text-white hover:bg-blue-800 disabled:bg-slate-200 disabled:text-slate-400"
+          className="rounded-lg bg-blue-700 px-3 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:bg-slate-200 disabled:text-slate-500"
         >
           +
         </button>
