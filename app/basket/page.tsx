@@ -8,10 +8,23 @@ export default function BasketPage() {
   const {
     items,
     basketTotal,
+    clearBasket,
     increaseQuantity,
     decreaseQuantity,
     removeFromBasket,
   } = useBasket();
+
+  function handleClearBasket() {
+    const confirmed = window.confirm(
+      "Are you sure you want to clear the basket?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    clearBasket();
+  }
 
   return (
     <AccountGate>
@@ -114,12 +127,22 @@ export default function BasketPage() {
               <p className="mt-2 text-sm text-slate-800">
                 Continue to the payment page to choose a payment method.
               </p>
-              <Link
-                href="/payment"
-                className="mt-4 inline-flex rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
-              >
-                Proceed to Payment
-              </Link>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link
+                  href="/payment"
+                  className="inline-flex rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+                >
+                  Proceed to Payment
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={handleClearBasket}
+                  className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                >
+                  Clear Basket
+                </button>
+              </div>
             </section>
           </>
         )}

@@ -12,6 +12,7 @@ type BasketContextValue = {
   itemCount: number;
   basketTotal: number;
   addToBasket: (product: Product) => void;
+  clearBasket: () => void;
   increaseQuantity: (productId: number) => void;
   decreaseQuantity: (productId: number) => void;
   removeFromBasket: (productId: number) => void;
@@ -124,6 +125,10 @@ export function BasketProvider({
     );
   }
 
+  function clearBasket() {
+    saveItems(EMPTY_ITEMS);
+  }
+
   function increaseQuantity(productId: number) {
     const currentItems = getStoredItems();
 
@@ -175,6 +180,7 @@ export function BasketProvider({
         itemCount,
         basketTotal,
         addToBasket,
+        clearBasket,
         increaseQuantity,
         decreaseQuantity,
         removeFromBasket,
