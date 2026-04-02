@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { Product } from "../data/products";
 import { useBasket } from "../context/basket-context";
 
@@ -29,6 +30,16 @@ export default function ProductCard({
 
   return (
     <article className="rounded-2xl border border-slate-300 bg-white p-5 shadow-sm">
+      <div className="mb-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+        <Image
+          src={product.image}
+          alt={product.imageAlt}
+          width={800}
+          height={600}
+          className="h-44 w-full object-cover"
+        />
+      </div>
+
       <h3 className="mb-2 text-lg font-semibold">{product.name}</h3>
       <p className="mb-1 text-sm text-slate-800">Category: {product.category}</p>
       <p className="mb-1 text-sm font-medium text-slate-900">

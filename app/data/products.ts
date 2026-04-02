@@ -4,6 +4,8 @@ export type Product = {
   category: string;
   price: number;
   stock: number;
+  image: string;
+  imageAlt: string;
 };
 
 // Hard-coded sample products for the prototype.
@@ -15,6 +17,8 @@ export const products: Product[] = [
     category: "Books",
     price: 24.99,
     stock: 15,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "SQA Advanced Higher Computing Study Guide",
   },
   {
     id: 2,
@@ -22,6 +26,8 @@ export const products: Product[] = [
     category: "Books",
     price: 19.5,
     stock: 10,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "Database Systems Revision Workbook",
   },
   {
     id: 3,
@@ -29,6 +35,8 @@ export const products: Product[] = [
     category: "Books",
     price: 22.0,
     stock: 8,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "Object-Oriented Programming Handbook",
   },
   {
     id: 4,
@@ -36,6 +44,8 @@ export const products: Product[] = [
     category: "CD/DVD",
     price: 14.99,
     stock: 12,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "Web Development Fundamentals DVD",
   },
   {
     id: 5,
@@ -43,6 +53,8 @@ export const products: Product[] = [
     category: "CD/DVD",
     price: 16.5,
     stock: 9,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "Computer Networking Tutorial DVD",
   },
   {
     id: 6,
@@ -50,6 +62,8 @@ export const products: Product[] = [
     category: "Software",
     price: 29.99,
     stock: 20,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "Python Practice Suite",
   },
   {
     id: 7,
@@ -57,6 +71,8 @@ export const products: Product[] = [
     category: "Software",
     price: 34.99,
     stock: 14,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "SQL Trainer Student Edition",
   },
   {
     id: 8,
@@ -64,6 +80,8 @@ export const products: Product[] = [
     category: "Software",
     price: 39.99,
     stock: 11,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "Network Simulator Learning Pack",
   },
   {
     id: 9,
@@ -71,6 +89,8 @@ export const products: Product[] = [
     category: "Hardware",
     price: 499.0,
     stock: 5,
+    image: "/products/product-placeholder.svg",
+    imageAlt: '14" Student Laptop',
   },
   {
     id: 10,
@@ -78,6 +98,8 @@ export const products: Product[] = [
     category: "Hardware",
     price: 8.99,
     stock: 30,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "RJ45 Connector Pack",
   },
   {
     id: 11,
@@ -85,6 +107,8 @@ export const products: Product[] = [
     category: "Hardware",
     price: 17.99,
     stock: 16,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "USB Ethernet Adapter",
   },
   {
     id: 12,
@@ -92,5 +116,7 @@ export const products: Product[] = [
     category: "Hardware",
     price: 89.99,
     stock: 7,
+    image: "/products/product-placeholder.svg",
+    imageAlt: "Raspberry Pi Starter Kit",
   },
 ];
