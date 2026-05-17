@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AccountGate from "../../components/account-gate";
+import ProductComments from "../../components/product-comments";
 import ProductCard from "../../components/product-card";
 import ProductDetailActions from "../../components/product-detail-actions";
 import { products } from "../../data/products";
@@ -79,26 +80,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </section>
 
-        <section className="border-t border-stone-200 pt-8">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <h2 className="text-2xl font-semibold text-slate-950">
-                Comments
-              </h2>
-              <p className="mt-1 text-sm text-slate-600">0 comments</p>
-            </div>
-            <button
-              type="button"
-              className="rounded-md border border-stone-300 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-stone-100"
-            >
-              Write comment
-            </button>
-          </div>
-
-          <div className="mt-5 rounded-md border border-dashed border-stone-300 bg-white p-5 text-sm text-slate-600">
-            No comments yet for this product.
-          </div>
-        </section>
+        <ProductComments productId={product.id} />
 
         {relatedProducts.length > 0 ? (
           <section className="border-t border-stone-200 pt-8">
