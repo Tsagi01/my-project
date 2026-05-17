@@ -1,8 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import type { Product } from "../data/products";
 import { useBasket } from "../context/basket-context";
+
+const categoryStyles: Record<string, string> = {
+  Books: "bg-blue-50 text-blue-800 ring-blue-200",
+  "CD/DVD": "bg-slate-50 text-slate-700 ring-slate-200",
+  Software: "bg-cyan-50 text-cyan-800 ring-cyan-200",
+  Hardware: "bg-indigo-50 text-indigo-800 ring-indigo-200",
+};
 
 export default function ProductCard({
   product,
@@ -19,7 +27,6 @@ export default function ProductCard({
   const hasReachedStockLimit = quantityInBasket >= product.stock;
 
   function handleDecrease() {
-    // If there is only one item left, remove it completely.
     if (quantityInBasket <= 1) {
       removeFromBasket(product.id);
       return;
@@ -29,56 +36,85 @@ export default function ProductCard({
   }
 
   return (
-    <article className="rounded-2xl border border-slate-300 bg-white p-5 shadow-sm">
-      <div className="mb-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-        <Image
-          src={product.image}
-          alt={product.imageAlt}
-          width={800}
-          height={600}
-          className="h-44 w-full object-cover"
-        />
+    <article className="group flex h-full flex-col">
+      <div className="relative mb-3 overflow-hidden rounded-md bg-stone-100">
+        <Link href={`/products/${product.id}`} aria-label={`View ${product.name}`}>
+          <Image
+            src={product.image}
+            alt={product.imageAlt}
+            width={800}
+            height={600}
+            className="aspect-square w-full object-cover transition duration-200 group-hover:scale-[1.02]"
+          />
+        </Link>
       </div>
 
-      <h3 className="mb-2 text-lg font-semibold">{product.name}</h3>
-      <p className="mb-1 text-sm text-slate-800">Category: {product.category}</p>
-      <p className="mb-1 text-sm font-medium text-slate-900">
-        Price: ${product.price.toFixed(2)}
-      </p>
-      <p className="mb-4 text-sm text-slate-800">Stock: {product.stock}</p>
-
-      <div className="flex items-center justify-center gap-2">
-        <button
-          type="button"
-          onClick={handleDecrease}
-          disabled={quantityInBasket === 0}
-          className="rounded-lg bg-slate-200 px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-300 disabled:text-slate-500"
-        >
-          -
-        </button>
-
-        <span className="min-w-8 text-center text-sm font-semibold text-slate-900">
-          {quantityInBasket}
-        </span>
-
-        {/* This button adds one item to the basket each time it is clicked. */}
-        <button
-          type="button"
-          onClick={() => addToBasket(product)}
-          disabled={hasReachedStockLimit}
-          className="rounded-lg bg-blue-700 px-3 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:bg-slate-200 disabled:text-slate-500"
-        >
-          +
-        </button>
+      <div className="text-xs font-semibold text-slate-500">
+        {product.commentCount} comments
       </div>
 
-      <p className="mt-3 text-sm text-slate-800">In basket: {quantityInBasket}</p>
-
-      {hasReachedStockLimit ? (
-        <p className="mt-1 text-sm font-medium text-amber-800">
-          You have reached the available stock for this item.
+      <Link href={`/products/${product.id}`} className="mt-2">
+        <h3 className="text-base font-semibold leading-snug text-slate-950 transition group-hover:text-blue-700">
+          {product.name}
+        </h3>
+        <p className="mt-1 text-sm font-bold text-slate-950">
+          ${product.price.toFixed(2)}
         </p>
-      ) : null}
+      </Link>
+
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <span
+          className={`rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${
+            categoryStyles[product.category] ?? "bg-stone-100 text-stone-700 ring-stone-200"
+          }`}
+        >
+          {product.category}
+        </span>
+        <span className="text-xs font-semibold text-slate-500">
+          {product.options.length} options
+        </span>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <p className="text-xs font-semibold text-slate-500">
+          {quantityInBasket > 0
+            ? `${quantityInBasket} in basket`
+            : `${product.stock} in stock`}
+        </p>
+
+        {quantityInBasket > 0 ? (
+          <div className="grid h-9 grid-cols-[32px_30px_32px] overflow-hidden rounded-md border border-stone-300 bg-white text-sm font-semibold text-slate-950">
+            <button
+              type="button"
+              onClick={handleDecrease}
+              className="grid place-items-center border-r border-stone-300 transition hover:bg-stone-100"
+              aria-label={`Remove one ${product.name} from basket`}
+            >
+              -
+            </button>
+            <span className="grid place-items-center">{quantityInBasket}</span>
+            <button
+              type="button"
+              onClick={() => addToBasket(product)}
+              disabled={hasReachedStockLimit}
+              className="grid place-items-center border-l border-stone-300 transition hover:bg-blue-600 hover:text-white disabled:bg-stone-100 disabled:text-stone-400"
+              aria-label={`Add one ${product.name} to basket`}
+            >
+              +
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => addToBasket(product)}
+            disabled={hasReachedStockLimit}
+            className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-800 transition hover:bg-blue-100 disabled:bg-stone-100 disabled:text-stone-500"
+            aria-label={`Add one ${product.name} to basket`}
+          >
+            Add
+          </button>
+        )}
+      </div>
     </article>
   );
 }

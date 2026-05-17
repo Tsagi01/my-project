@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useSyncExternalStore } from "react";
 import type { Product } from "../data/products";
+import { useStudent } from "./student-context";
 
 export type BasketItem = Product & {
   quantity: number;
@@ -20,12 +21,29 @@ type BasketContextValue = {
 };
 
 const BasketContext = createContext<BasketContextValue | undefined>(undefined);
-const STORAGE_KEY = "357-basket-items";
+const STORAGE_KEY_PREFIX = "357-basket-items";
 const listeners = new Set<() => void>();
 const EMPTY_ITEMS: BasketItem[] = [];
 
 let cachedItems: BasketItem[] = EMPTY_ITEMS;
 let cachedRawValue = "";
+let cachedStorageKey = "";
+
+function getBasketStorageKey(studentId: string | undefined) {
+  return studentId ? `${STORAGE_KEY_PREFIX}:${studentId}` : "";
+}
+
+function getBrowserStorage() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    return window.localStorage ?? null;
+  } catch {
+    return null;
+  }
+}
 
 function emitChange() {
   listeners.forEach((listener) => listener());
@@ -35,7 +53,7 @@ function subscribe(listener: () => void) {
   listeners.add(listener);
 
   function handleStorageChange(event: StorageEvent) {
-    if (event.key === STORAGE_KEY) {
+    if (event.key?.startsWith(STORAGE_KEY_PREFIX)) {
       listener();
     }
   }
@@ -49,17 +67,28 @@ function subscribe(listener: () => void) {
 }
 
 // Read the saved basket from localStorage in a safe way.
-function getStoredItems() {
-  if (typeof window === "undefined") {
-    return EMPTY_ITEMS;
-  }
-
-  const savedItems = window.localStorage.getItem(STORAGE_KEY) ?? "";
-
-  // If localStorage has not changed, reuse the same array reference.
-  if (savedItems === cachedRawValue) {
+function getStoredItems(storageKey: string) {
+  if (!storageKey) {
+    cachedStorageKey = "";
+    cachedRawValue = "";
+    cachedItems = EMPTY_ITEMS;
     return cachedItems;
   }
+
+  const storage = getBrowserStorage();
+
+  if (!storage) {
+    return cachedItems;
+  }
+
+  const savedItems = storage.getItem(storageKey) ?? "";
+
+  // If localStorage has not changed, reuse the same array reference.
+  if (storageKey === cachedStorageKey && savedItems === cachedRawValue) {
+    return cachedItems;
+  }
+
+  cachedStorageKey = storageKey;
 
   if (!savedItems) {
     cachedRawValue = "";
@@ -72,7 +101,7 @@ function getStoredItems() {
     cachedItems = JSON.parse(savedItems) as BasketItem[];
     return cachedItems;
   } catch {
-    window.localStorage.removeItem(STORAGE_KEY);
+    storage.removeItem(storageKey);
     cachedRawValue = "";
     cachedItems = EMPTY_ITEMS;
     return cachedItems;
@@ -83,14 +112,21 @@ function getServerSnapshot() {
   return EMPTY_ITEMS;
 }
 
-function saveItems(items: BasketItem[]) {
-  if (typeof window === "undefined") {
+function saveItems(storageKey: string, items: BasketItem[]) {
+  if (!storageKey) {
+    cachedStorageKey = "";
+    cachedRawValue = "";
+    cachedItems = EMPTY_ITEMS;
+    emitChange();
     return;
   }
 
+  const storage = getBrowserStorage();
+
+  cachedStorageKey = storageKey;
   cachedItems = items;
   cachedRawValue = JSON.stringify(items);
-  window.localStorage.setItem(STORAGE_KEY, cachedRawValue);
+  storage?.setItem(storageKey, cachedRawValue);
   emitChange();
 }
 
@@ -99,18 +135,20 @@ export function BasketProvider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { student } = useStudent();
+  const storageKey = getBasketStorageKey(student?.studentId);
   const items = useSyncExternalStore(
     subscribe,
-    getStoredItems,
+    () => getStoredItems(storageKey),
     getServerSnapshot,
   );
 
   function addToBasket(product: Product) {
-    const currentItems = getStoredItems();
+    const currentItems = getStoredItems(storageKey);
     const existingItem = currentItems.find((item) => item.id === product.id);
 
     if (!existingItem) {
-      saveItems([...currentItems, { ...product, quantity: 1 }]);
+      saveItems(storageKey, [...currentItems, { ...product, quantity: 1 }]);
       return;
     }
 
@@ -119,6 +157,7 @@ export function BasketProvider({
     }
 
     saveItems(
+      storageKey,
       currentItems.map((item) =>
         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
       ),
@@ -126,13 +165,14 @@ export function BasketProvider({
   }
 
   function clearBasket() {
-    saveItems(EMPTY_ITEMS);
+    saveItems(storageKey, EMPTY_ITEMS);
   }
 
   function increaseQuantity(productId: number) {
-    const currentItems = getStoredItems();
+    const currentItems = getStoredItems(storageKey);
 
     saveItems(
+      storageKey,
       currentItems.map((item) => {
         if (item.id !== productId || item.quantity >= item.stock) {
           return item;
@@ -144,9 +184,10 @@ export function BasketProvider({
   }
 
   function decreaseQuantity(productId: number) {
-    const currentItems = getStoredItems();
+    const currentItems = getStoredItems(storageKey);
 
     saveItems(
+      storageKey,
       currentItems.map((item) => {
         if (item.id !== productId || item.quantity <= 1) {
           return item;
@@ -158,8 +199,11 @@ export function BasketProvider({
   }
 
   function removeFromBasket(productId: number) {
-    const currentItems = getStoredItems();
-    saveItems(currentItems.filter((item) => item.id !== productId));
+    const currentItems = getStoredItems(storageKey);
+    saveItems(
+      storageKey,
+      currentItems.filter((item) => item.id !== productId),
+    );
   }
 
   function getItemQuantity(productId: number) {

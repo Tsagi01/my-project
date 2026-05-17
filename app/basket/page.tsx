@@ -28,56 +28,59 @@ export default function BasketPage() {
 
   return (
     <AccountGate>
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-6 py-8">
-        <section className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-blue-700">
-            Basket Prototype
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-5 py-8 lg:px-6">
+        <section className="border-b border-stone-200 pb-6">
+          <nav className="mb-5 flex items-center gap-2 text-sm text-slate-500">
+            <Link href="/?page=1#products">Shop</Link>
+            <span>/</span>
+            <span className="font-semibold text-slate-950">Basket</span>
+          </nav>
+          <p className="mb-3 text-sm font-semibold uppercase text-blue-600">
+            Basket
           </p>
-          <h1 className="mb-3 text-3xl font-bold">Your Basket</h1>
-          <p className="text-slate-800">
-            This basket uses localStorage for prototype purposes, so your items
-            stay in the browser even after a refresh.
+          <h1 className="text-4xl font-bold text-slate-950">Your Basket</h1>
+          <p className="max-w-3xl text-slate-600">
+            Review quantities, remove items, and check the running total before
+            selecting a payment method.
           </p>
         </section>
 
         {items.length === 0 ? (
-          <section className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-2 text-xl font-semibold">Basket is empty</h2>
-            <p className="mb-4 text-slate-800">
+          <section className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+            <h2 className="mb-2 text-xl font-semibold text-slate-950">
+              Basket is empty
+            </h2>
+            <p className="mb-4 text-slate-600">
               Add some products from the home page to see them here.
             </p>
             <Link
               href="/?page=1#products"
-              className="inline-flex rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+              className="inline-flex rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
             >
               Back to Products
             </Link>
           </section>
         ) : (
-          <>
-            <section className="grid gap-4">
+          <div className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-start">
+            <section className="grid gap-3">
               {items.map((item) => {
                 const subtotal = item.price * item.quantity;
 
                 return (
                   <article
                     key={item.id}
-                    className="rounded-2xl border border-slate-300 bg-white p-5 shadow-sm"
+                    className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm"
                   >
-                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <h2 className="text-xl font-semibold">{item.name}</h2>
-                        <p className="text-sm text-slate-800">
-                          Price: ${item.price.toFixed(2)}
+                        <h2 className="text-lg font-semibold text-slate-950">
+                          {item.name}
+                        </h2>
+                        <p className="mt-1 text-sm text-slate-600">
+                          ${item.price.toFixed(2)} each · {item.stock} available
                         </p>
-                        <p className="text-sm text-slate-800">
-                          Quantity: {item.quantity}
-                        </p>
-                        <p className="text-sm font-medium text-slate-900">
-                          Subtotal: ${subtotal.toFixed(2)}
-                        </p>
-                        <p className="text-sm text-slate-800">
-                          Available stock: {item.stock}
+                        <p className="mt-2 text-sm font-semibold text-slate-950">
+                          Subtotal ${subtotal.toFixed(2)}
                         </p>
                       </div>
 
@@ -87,7 +90,8 @@ export default function BasketPage() {
                           type="button"
                           onClick={() => decreaseQuantity(item.id)}
                           disabled={item.quantity === 1}
-                          className="rounded-lg bg-slate-200 px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-300 disabled:text-slate-500"
+                          className="h-10 w-10 rounded-md border border-stone-300 bg-white text-lg font-semibold text-slate-800 transition hover:bg-stone-100 disabled:bg-stone-50 disabled:text-stone-300"
+                          aria-label={`Decrease ${item.name} quantity`}
                         >
                           -
                         </button>
@@ -100,7 +104,8 @@ export default function BasketPage() {
                           type="button"
                           onClick={() => increaseQuantity(item.id)}
                           disabled={item.quantity >= item.stock}
-                          className="rounded-lg bg-blue-700 px-3 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:bg-slate-200 disabled:text-slate-500"
+                          className="h-10 w-10 rounded-md bg-blue-600 text-lg font-semibold text-white transition hover:bg-blue-700 disabled:bg-stone-100 disabled:text-stone-400"
+                          aria-label={`Increase ${item.name} quantity`}
                         >
                           +
                         </button>
@@ -108,7 +113,7 @@ export default function BasketPage() {
                         <button
                           type="button"
                           onClick={() => removeFromBasket(item.id)}
-                          className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                          className="rounded-md border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
                         >
                           Remove
                         </button>
@@ -119,18 +124,20 @@ export default function BasketPage() {
               })}
             </section>
 
-            <section className="rounded-2xl bg-white p-6 shadow-sm">
-              <h2 className="mb-2 text-xl font-semibold">Basket Total</h2>
-              <p className="text-lg font-bold text-slate-950">
+            <section className="rounded-lg border border-stone-200 bg-white p-5 shadow-sm lg:sticky lg:top-6">
+              <h2 className="mb-3 text-lg font-semibold text-slate-950">
+                Basket Total
+              </h2>
+              <p className="text-3xl font-bold text-slate-950">
                 ${basketTotal.toFixed(2)}
               </p>
-              <p className="mt-2 text-sm text-slate-800">
+              <p className="mt-2 text-sm text-slate-600">
                 Continue to the payment page to choose a payment method.
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link
                   href="/payment"
-                  className="inline-flex rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+                  className="inline-flex rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
                 >
                   Proceed to Payment
                 </Link>
@@ -138,13 +145,13 @@ export default function BasketPage() {
                 <button
                   type="button"
                   onClick={handleClearBasket}
-                  className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                  className="rounded-md border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50"
                 >
                   Clear Basket
                 </button>
               </div>
             </section>
-          </>
+          </div>
         )}
       </main>
     </AccountGate>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SiteFooter from "./components/site-footer";
 import SiteHeader from "./components/site-header";
 import { BasketProvider } from "./context/basket-context";
 import { StudentProvider } from "./context/student-context";
@@ -21,6 +22,7 @@ export default function RootLayout({
           <BasketProvider>
             <SiteHeader />
             {children}
+            <SiteFooter />
           </BasketProvider>
         </StudentProvider>
       </body>

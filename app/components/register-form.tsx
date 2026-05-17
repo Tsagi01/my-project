@@ -51,53 +51,69 @@ export default function RegisterForm({
   return (
     <>
       {student ? (
-        <section className="rounded-2xl border border-green-200 bg-green-50 p-6">
-          <h2 className="mb-3 text-xl font-semibold text-slate-900">
+        <section className="rounded-lg border border-blue-200 bg-blue-50 p-5">
+          <h2 className="mb-3 text-lg font-semibold text-slate-950">
             Saved Account
           </h2>
-          <p className="text-slate-800">Name: {student.fullName}</p>
-          <p className="text-slate-800">Email: {student.email}</p>
-          <p className="text-slate-800">Student ID: {student.studentId}</p>
+          <div className="grid gap-2 text-sm text-slate-700 sm:grid-cols-3">
+            <p>
+              <span className="block font-semibold text-slate-950">Name</span>
+              {student.fullName}
+            </p>
+            <p>
+              <span className="block font-semibold text-slate-950">Email</span>
+              {student.email}
+            </p>
+            <p>
+              <span className="block font-semibold text-slate-950">Student ID</span>
+              {student.studentId}
+            </p>
+          </div>
         </section>
       ) : null}
 
-      <section className="rounded-2xl bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-xl font-semibold">Register Form</h2>
+      <section className="rounded-lg border border-stone-200 bg-white p-5 shadow-sm">
+        <h2 className="mb-1 text-xl font-semibold text-slate-950">
+          Student details
+        </h2>
+        <p className="mb-5 text-sm text-slate-600">
+          Save or update the student account used for this browser.
+        </p>
 
         {/* The form is intentionally simple so it is easy to understand. */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col gap-2">
-            <span className="text-sm font-medium text-slate-900">Full Name</span>
+            <span className="text-sm font-semibold text-slate-900">Full Name</span>
             <input
               type="text"
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
               required
-              className="rounded-lg border border-slate-300 px-4 py-3 text-slate-900 outline-none focus:border-blue-500"
+              className="rounded-md border border-stone-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100"
               placeholder="Enter your full name"
             />
           </label>
 
           <label className="flex flex-col gap-2">
-            <span className="text-sm font-medium text-slate-900">Email</span>
+            <span className="text-sm font-semibold text-slate-900">Email</span>
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              className="rounded-lg border border-slate-300 px-4 py-3 text-slate-900 outline-none focus:border-blue-500"
+              className="rounded-md border border-stone-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100"
               placeholder="Enter your email"
             />
           </label>
 
           <label className="flex flex-col gap-2">
-            <span className="text-sm font-medium text-slate-900">Student ID</span>
+            <span className="text-sm font-semibold text-slate-900">Student ID</span>
             <input
               type="text"
               value={studentId}
               onChange={(event) => setStudentId(event.target.value)}
               required
-              className="rounded-lg border border-slate-300 px-4 py-3 text-slate-900 outline-none focus:border-blue-500"
+              className="rounded-md border border-stone-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100"
               placeholder="Enter your student ID"
             />
           </label>
@@ -105,7 +121,7 @@ export default function RegisterForm({
           <div className="flex flex-wrap gap-3 pt-2">
             <button
               type="submit"
-              className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+              className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
             >
               Save Account
             </button>
@@ -113,15 +129,15 @@ export default function RegisterForm({
             <button
               type="button"
               onClick={handleClear}
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-100"
+              className="rounded-md border border-stone-300 px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-stone-100"
             >
-              Clear Saved Account
+              Clear Account
             </button>
 
             {showBackLink ? (
               <Link
                 href="/?page=1#products"
-                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-100"
+                className="rounded-md border border-stone-300 px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-stone-100"
               >
                 Back to Products
               </Link>
@@ -130,7 +146,7 @@ export default function RegisterForm({
         </form>
 
         {successMessage ? (
-          <p className="mt-4 text-sm font-medium text-green-700">
+          <p className="mt-4 rounded-md bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">
             {successMessage}
           </p>
         ) : null}

@@ -6,36 +6,72 @@ import { useStudent } from "../context/student-context";
 
 export default function SiteHeader() {
   const { itemCount } = useBasket();
-  const { student } = useStudent();
+  const { logout, student } = useStudent();
 
   return (
-    <nav className="border-b border-blue-200 bg-blue-950 text-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <div>
-          <p className="text-lg font-bold">357 Ltd</p>
-          <p className="text-sm text-blue-100">
-            {student ? `Signed in as ${student.fullName}` : "Online Ordering Prototype"}
+    <header className="border-b border-stone-200 bg-white text-slate-950">
+      <div className="bg-blue-950 px-5 py-2 text-center text-xs font-semibold text-white">
+        Student resource ordering for SQA Advanced Higher Computing
+      </div>
+
+      <nav className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-6">
+        <div className="flex items-center gap-3">
+          <Link href="/" className="text-xl font-bold">
+            357 Ltd
+          </Link>
+          <span className="hidden h-5 w-px bg-stone-300 sm:block" />
+          <p className="text-sm text-slate-600">
+            {student ? `Signed in as ${student.fullName}` : "Student ordering"}
           </p>
         </div>
 
-        <div className="flex gap-4 text-sm font-medium text-white">
+        <div className="flex flex-wrap gap-2 text-sm font-semibold text-slate-700">
           <Link
             href="/?page=1#products"
-            className="rounded-md px-3 py-2 hover:bg-blue-800"
+            className="rounded-md px-3 py-2 transition hover:bg-stone-100 hover:text-slate-950"
           >
             Products
           </Link>
-          <Link href="/basket" className="rounded-md px-3 py-2 hover:bg-blue-800">
+          <Link
+            href="/basket"
+            className="rounded-md px-3 py-2 transition hover:bg-stone-100 hover:text-slate-950"
+          >
             Basket ({itemCount})
           </Link>
-          <Link
-            href="/register"
-            className="rounded-md px-3 py-2 hover:bg-blue-800"
-          >
-            Register
-          </Link>
+          {student ? (
+            <>
+              <Link
+                href="/register"
+                className="rounded-md px-3 py-2 transition hover:bg-stone-100 hover:text-slate-950"
+              >
+                Account
+              </Link>
+              <button
+                type="button"
+                onClick={logout}
+                className="rounded-md border border-stone-300 bg-white px-3 py-2 text-slate-800 transition hover:bg-stone-100"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="rounded-md bg-blue-600 px-3 py-2 text-white transition hover:bg-blue-700"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="rounded-md border border-stone-300 px-3 py-2 transition hover:bg-stone-100 hover:text-slate-950"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 }

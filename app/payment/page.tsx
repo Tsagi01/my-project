@@ -27,13 +27,22 @@ export default function PaymentPage() {
 
   return (
     <AccountGate>
-      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-6 py-8">
-        <section className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-blue-700">
-            Payment Prototype
+      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-5 py-8 lg:px-6">
+        <section className="border-b border-stone-200 pb-6">
+          <nav className="mb-5 flex items-center gap-2 text-sm text-slate-500">
+            <Link href="/?page=1#products">Shop</Link>
+            <span>/</span>
+            <Link href="/basket">Basket</Link>
+            <span>/</span>
+            <span className="font-semibold text-slate-950">Payment</span>
+          </nav>
+          <p className="mb-3 text-sm font-semibold uppercase text-blue-600">
+            Payment
           </p>
-          <h1 className="mb-3 text-3xl font-bold">Payment Page</h1>
-          <p className="text-slate-800">
+          <h1 className="text-4xl font-bold text-slate-950">
+            Choose Payment Method
+          </h1>
+          <p className="mt-3 max-w-3xl text-slate-600">
             This page is part of the prototype flow only. It lets the user pick
             a payment method, but it does not connect to any real payment
             system.
@@ -41,36 +50,44 @@ export default function PaymentPage() {
         </section>
 
         {itemCount === 0 ? (
-          <section className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-2 text-xl font-semibold">Basket is empty</h2>
-            <p className="mb-4 text-slate-800">
+          <section className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+            <h2 className="mb-2 text-xl font-semibold text-slate-950">
+              Basket is empty
+            </h2>
+            <p className="mb-4 text-slate-600">
               Add some items before going to the payment page.
             </p>
             <Link
               href="/basket"
-              className="inline-flex rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+              className="inline-flex rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
             >
               Back to Basket
             </Link>
           </section>
         ) : (
-          <>
-            <section className="rounded-2xl bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-xl font-semibold">Order Summary</h2>
-              <p className="text-slate-800">Items in basket: {itemCount}</p>
-              <p className="mt-2 text-lg font-bold text-slate-950">
-                Total: ${basketTotal.toFixed(2)}
+          <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+            <section className="rounded-lg border border-stone-200 bg-white p-5 shadow-sm">
+              <h2 className="mb-4 text-lg font-semibold text-slate-950">
+                Order Summary
+              </h2>
+              <p className="text-sm text-slate-600">Items in basket</p>
+              <p className="text-xl font-bold text-slate-950">{itemCount}</p>
+              <p className="mt-4 text-sm text-slate-600">Total</p>
+              <p className="text-3xl font-bold text-slate-950">
+                ${basketTotal.toFixed(2)}
               </p>
             </section>
 
-            <section className="rounded-2xl bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-xl font-semibold">Choose Payment Method</h2>
+            <section className="rounded-lg border border-stone-200 bg-white p-5 shadow-sm">
+              <h2 className="mb-4 text-lg font-semibold text-slate-950">
+                Payment Method
+              </h2>
 
               <div className="flex flex-col gap-3">
                 {paymentMethods.map((method) => (
                   <label
                     key={method}
-                    className="flex items-center gap-3 rounded-xl border border-slate-200 p-4"
+                    className="flex items-center gap-3 rounded-md border border-stone-200 p-4 text-sm font-semibold text-slate-800 transition hover:border-blue-300 hover:bg-blue-50"
                   >
                     <input
                       type="radio"
@@ -78,8 +95,9 @@ export default function PaymentPage() {
                       value={method}
                       checked={selectedMethod === method}
                       onChange={() => setSelectedMethod(method)}
+                      className="h-4 w-4 accent-blue-600"
                     />
-                    <span className="text-slate-900">{method}</span>
+                    <span>{method}</span>
                   </label>
                 ))}
               </div>
@@ -88,26 +106,26 @@ export default function PaymentPage() {
                 <button
                   type="button"
                   onClick={handlePaymentSelection}
-                  className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+                  className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
                 >
                   Confirm Payment Method
                 </button>
 
                 <Link
                   href="/basket"
-                  className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-100"
+                  className="rounded-md border border-stone-300 px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-stone-100"
                 >
                   Back to Basket
                 </Link>
               </div>
 
               {message ? (
-                <p className="mt-4 text-sm font-medium text-green-700">
+                <p className="mt-4 rounded-md bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">
                   {message}
                 </p>
               ) : null}
             </section>
-          </>
+          </div>
         )}
       </main>
     </AccountGate>
