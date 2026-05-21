@@ -1,12 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useBasket } from "../context/basket-context";
 import { useStudent } from "../context/student-context";
 
 export default function SiteHeader() {
   const { itemCount } = useBasket();
   const { logout, student } = useStudent();
+  const pathname = usePathname();
+
+  function navLinkClass(isActive: boolean) {
+    return `rounded-md px-3 py-2 transition ${
+      isActive
+        ? "bg-blue-50 text-blue-800"
+        : "hover:bg-stone-100 hover:text-slate-950"
+    }`;
+  }
 
   return (
     <header className="border-b border-stone-200 bg-white text-slate-950">
@@ -28,13 +38,13 @@ export default function SiteHeader() {
         <div className="flex flex-wrap gap-2 text-sm font-semibold text-slate-700">
           <Link
             href="/?page=1#products"
-            className="rounded-md px-3 py-2 transition hover:bg-stone-100 hover:text-slate-950"
+            className={navLinkClass(pathname === "/" || pathname.startsWith("/products"))}
           >
             Products
           </Link>
           <Link
             href="/basket"
-            className="rounded-md px-3 py-2 transition hover:bg-stone-100 hover:text-slate-950"
+            className={navLinkClass(pathname === "/basket")}
           >
             Basket ({itemCount})
           </Link>
@@ -42,7 +52,7 @@ export default function SiteHeader() {
             <>
               <Link
                 href="/register"
-                className="rounded-md px-3 py-2 transition hover:bg-stone-100 hover:text-slate-950"
+                className={navLinkClass(pathname === "/register")}
               >
                 Account
               </Link>

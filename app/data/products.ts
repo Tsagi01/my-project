@@ -22,7 +22,7 @@ export const products: Product[] = [
     category: "Books",
     price: 24.99,
     stock: 15,
-    image: "/products/product-placeholder.svg",
+    image: "/products/book-resource.svg",
     imageAlt: "SQA Advanced Higher Computing Study Guide",
     description:
       "A structured revision guide covering key concepts, exam-style questions, and practical computing notes for Advanced Higher students.",
@@ -37,7 +37,7 @@ export const products: Product[] = [
     category: "Books",
     price: 19.5,
     stock: 10,
-    image: "/products/product-placeholder.svg",
+    image: "/products/book-resource.svg",
     imageAlt: "Database Systems Revision Workbook",
     description:
       "Practice workbook for relational databases, normalisation, SQL queries, and coursework preparation.",
@@ -52,7 +52,7 @@ export const products: Product[] = [
     category: "Books",
     price: 22.0,
     stock: 8,
-    image: "/products/product-placeholder.svg",
+    image: "/products/book-resource.svg",
     imageAlt: "Object-Oriented Programming Handbook",
     description:
       "A concise handbook for classes, objects, inheritance, testing, and common programming patterns used in coursework.",
@@ -67,7 +67,7 @@ export const products: Product[] = [
     category: "CD/DVD",
     price: 14.99,
     stock: 12,
-    image: "/products/product-placeholder.svg",
+    image: "/products/media-resource.svg",
     imageAlt: "Web Development Fundamentals DVD",
     description:
       "Video lessons covering HTML, CSS, JavaScript basics, accessibility, and responsive web page structure.",
@@ -82,7 +82,7 @@ export const products: Product[] = [
     category: "CD/DVD",
     price: 16.5,
     stock: 9,
-    image: "/products/product-placeholder.svg",
+    image: "/products/media-resource.svg",
     imageAlt: "Computer Networking Tutorial DVD",
     description:
       "Guided networking tutorials for addressing, routing basics, common hardware, and troubleshooting exercises.",
@@ -97,7 +97,7 @@ export const products: Product[] = [
     category: "Software",
     price: 29.99,
     stock: 20,
-    image: "/products/product-placeholder.svg",
+    image: "/products/software-resource.svg",
     imageAlt: "Python Practice Suite",
     description:
       "A student edition practice package with programming tasks, worked examples, and self-check exercises.",
@@ -112,7 +112,7 @@ export const products: Product[] = [
     category: "Software",
     price: 34.99,
     stock: 14,
-    image: "/products/product-placeholder.svg",
+    image: "/products/software-resource.svg",
     imageAlt: "SQL Trainer Student Edition",
     description:
       "Interactive SQL trainer with query practice, schema exercises, and feedback designed for database revision.",
@@ -127,7 +127,7 @@ export const products: Product[] = [
     category: "Software",
     price: 39.99,
     stock: 11,
-    image: "/products/product-placeholder.svg",
+    image: "/products/software-resource.svg",
     imageAlt: "Network Simulator Learning Pack",
     description:
       "A lightweight simulation pack for network layouts, packet flow demonstrations, and classroom practice.",
@@ -142,7 +142,7 @@ export const products: Product[] = [
     category: "Hardware",
     price: 499.0,
     stock: 5,
-    image: "/products/product-placeholder.svg",
+    image: "/products/hardware-resource.svg",
     imageAlt: '14" Student Laptop',
     description:
       "A compact student laptop suitable for coursework, browsing resources, programming exercises, and presentations.",
@@ -157,7 +157,7 @@ export const products: Product[] = [
     category: "Hardware",
     price: 8.99,
     stock: 30,
-    image: "/products/product-placeholder.svg",
+    image: "/products/hardware-resource.svg",
     imageAlt: "RJ45 Connector Pack",
     description:
       "A practical connector pack for networking labs, cable demonstrations, and hardware troubleshooting lessons.",
@@ -172,7 +172,7 @@ export const products: Product[] = [
     category: "Hardware",
     price: 17.99,
     stock: 16,
-    image: "/products/product-placeholder.svg",
+    image: "/products/hardware-resource.svg",
     imageAlt: "USB Ethernet Adapter",
     description:
       "Portable USB Ethernet adapter for laptops without built-in network ports and practical networking sessions.",
@@ -187,7 +187,7 @@ export const products: Product[] = [
     category: "Hardware",
     price: 89.99,
     stock: 7,
-    image: "/products/product-placeholder.svg",
+    image: "/products/hardware-resource.svg",
     imageAlt: "Raspberry Pi Starter Kit",
     description:
       "Starter kit for practical computing projects, including classroom-friendly hardware for experiments and prototypes.",

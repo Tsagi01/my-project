@@ -23,7 +23,20 @@ export default function ProductDetailActions({
   }
 
   return (
-    <div className="mt-6 flex flex-col gap-6">
+    <div className="mt-6 rounded-md border border-stone-200 bg-white p-5 shadow-sm">
+      <div className="mb-5 flex items-center justify-between gap-4 border-b border-stone-200 pb-4">
+        <div>
+          <p className="text-sm font-semibold text-slate-950">Order options</p>
+          <p className="mt-1 text-sm text-slate-500">
+            {remainingStock} available
+          </p>
+        </div>
+        <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800">
+          In stock
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-6">
       <div>
         <p className="mb-2 text-sm font-semibold text-slate-950">
           {product.optionLabel}
@@ -96,6 +109,7 @@ export default function ProductDetailActions({
           <p>Browser-saved basket</p>
           <p>Prototype payment only</p>
         </div>
+      </div>
       </div>
     </div>
   );

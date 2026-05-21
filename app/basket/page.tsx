@@ -46,11 +46,14 @@ export default function BasketPage() {
         </section>
 
         {items.length === 0 ? (
-          <section className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+          <section className="rounded-lg border border-blue-100 bg-blue-50/40 p-8 text-center shadow-sm">
+            <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-white text-2xl font-bold text-blue-700 shadow-sm">
+              0
+            </div>
             <h2 className="mb-2 text-xl font-semibold text-slate-950">
               Basket is empty
             </h2>
-            <p className="mb-4 text-slate-600">
+            <p className="mx-auto mb-5 max-w-md text-slate-600">
               Add some products from the home page to see them here.
             </p>
             <Link

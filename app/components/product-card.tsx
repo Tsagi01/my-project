@@ -36,7 +36,7 @@ export default function ProductCard({
   }
 
   return (
-    <article className="group flex h-full flex-col">
+    <article className="group flex h-full flex-col rounded-md border border-transparent p-2 transition hover:border-blue-100 hover:bg-white hover:shadow-sm">
       <div className="relative mb-3 overflow-hidden rounded-md bg-stone-100">
         <Link href={`/products/${product.id}`} aria-label={`View ${product.name}`}>
           <Image
@@ -49,12 +49,13 @@ export default function ProductCard({
         </Link>
       </div>
 
-      <div className="text-xs font-semibold text-slate-500">
-        {product.commentCount} comments
+      <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-500">
+        <span>{product.commentCount} comments</span>
+        <span>{product.stock} in stock</span>
       </div>
 
       <Link href={`/products/${product.id}`} className="mt-2">
-        <h3 className="text-base font-semibold leading-snug text-slate-950 transition group-hover:text-blue-700">
+        <h3 className="min-h-12 text-base font-semibold leading-snug text-slate-950 transition group-hover:text-blue-700">
           {product.name}
         </h3>
         <p className="mt-1 text-sm font-bold text-slate-950">
@@ -75,11 +76,11 @@ export default function ProductCard({
         </span>
       </div>
 
-      <div className="mt-3 flex items-center justify-between gap-3">
+      <div className="mt-auto flex items-center justify-between gap-3 pt-4">
         <p className="text-xs font-semibold text-slate-500">
           {quantityInBasket > 0
             ? `${quantityInBasket} in basket`
-            : `${product.stock} in stock`}
+            : "Ready to add"}
         </p>
 
         {quantityInBasket > 0 ? (
