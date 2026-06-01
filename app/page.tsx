@@ -97,7 +97,7 @@ export default async function Home({ searchParams }: HomeProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
             {visibleProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -153,9 +153,9 @@ export default async function Home({ searchParams }: HomeProps) {
             Prototype scope
           </h2>
           <p className="text-sm text-slate-600">
-            In later steps, we can add product details, login, and checkout. For
-            now, this prototype focuses on browsing products and managing a simple
-            basket.
+            This prototype uses browser localStorage for student login, separate
+            baskets, product comments, and the latest order confirmation. No
+            real payment is processed.
           </p>
         </section>
       </main>

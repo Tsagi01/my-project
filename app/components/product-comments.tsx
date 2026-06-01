@@ -124,6 +124,7 @@ export default function ProductComments({
   );
   const [isWriting, setIsWriting] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const remainingCharacters = 500 - commentText.length;
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -145,6 +146,19 @@ export default function ProductComments({
     saveComments(storageKey, [nextComment, ...comments]);
     setCommentText("");
     setIsWriting(false);
+  }
+
+  function handleDeleteComment(commentId: string) {
+    const confirmed = window.confirm("Delete this comment?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    saveComments(
+      storageKey,
+      comments.filter((comment) => comment.id !== commentId),
+    );
   }
 
   const commentLabel =
@@ -176,11 +190,15 @@ export default function ProductComments({
               value={commentText}
               onChange={(event) => setCommentText(event.target.value)}
               required
+              maxLength={500}
               rows={4}
               className="resize-none rounded-md border border-stone-300 px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100"
               placeholder="Write your comment about this product"
             />
           </label>
+          <p className="mt-2 text-xs font-semibold text-slate-500">
+            {remainingCharacters} characters remaining
+          </p>
 
           <div className="mt-4 flex flex-wrap gap-3">
             <button
@@ -215,12 +233,23 @@ export default function ProductComments({
               className="rounded-md border border-stone-200 bg-white p-4 shadow-sm"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="font-semibold text-slate-950">
-                  {comment.authorName}
-                </p>
-                <p className="text-xs font-semibold text-slate-500">
-                  {formatCommentDate(comment.createdAt)}
-                </p>
+                <div>
+                  <p className="font-semibold text-slate-950">
+                    {comment.authorName}
+                  </p>
+                  <p className="text-xs font-semibold text-slate-500">
+                    {formatCommentDate(comment.createdAt)}
+                  </p>
+                </div>
+                {student?.studentId === comment.studentId ? (
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteComment(comment.id)}
+                    className="rounded-md border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                  >
+                    Delete
+                  </button>
+                ) : null}
               </div>
               <p className="mt-3 text-sm leading-6 text-slate-700">
                 {comment.text}

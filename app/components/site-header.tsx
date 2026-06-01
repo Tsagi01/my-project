@@ -44,7 +44,11 @@ export default function SiteHeader() {
           </Link>
           <Link
             href="/basket"
-            className={navLinkClass(pathname === "/basket")}
+            className={navLinkClass(
+              pathname === "/basket" ||
+                pathname === "/payment" ||
+                pathname === "/confirmation",
+            )}
           >
             Basket ({itemCount})
           </Link>

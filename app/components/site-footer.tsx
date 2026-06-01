@@ -26,6 +26,9 @@ export default function SiteFooter() {
             <Link href="/payment" className="hover:text-slate-950">
               Payment
             </Link>
+            <Link href="/confirmation" className="hover:text-slate-950">
+              Confirmation
+            </Link>
           </div>
         </div>
 

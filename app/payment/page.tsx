@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import AccountGate from "../components/account-gate";
 import { useBasket } from "../context/basket-context";
+import { useStudent } from "../context/student-context";
 
 const paymentMethods = [
   "Credit or Debit Card",
@@ -13,16 +15,41 @@ const paymentMethods = [
 ];
 
 export default function PaymentPage() {
-  const { basketTotal, itemCount } = useBasket();
+  const { basketTotal, clearBasket, itemCount, items } = useBasket();
+  const { student } = useStudent();
+  const router = useRouter();
   const [selectedMethod, setSelectedMethod] = useState(paymentMethods[0]);
-  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handlePaymentSelection() {
-    // Prototype only: we save the selection in local state and do not
-    // connect to any real payment provider.
-    setMessage(
-      `You selected ${selectedMethod}. This is a prototype, so no real payment will be processed.`,
+    if (!student || items.length === 0) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const orderId = `357-${Date.now().toString().slice(-6)}`;
+    const order = {
+      id: orderId,
+      createdAt: new Date().toISOString(),
+      studentId: student.studentId,
+      studentName: student.fullName,
+      paymentMethod: selectedMethod,
+      total: basketTotal,
+      items: items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+    };
+
+    window.localStorage.setItem(
+      `357-last-order:${student.studentId}`,
+      JSON.stringify(order),
     );
+    clearBasket();
+    router.push(`/confirmation?order=${encodeURIComponent(orderId)}`);
   }
 
   return (
@@ -72,6 +99,21 @@ export default function PaymentPage() {
               </h2>
               <p className="text-sm text-slate-600">Items in basket</p>
               <p className="text-xl font-bold text-slate-950">{itemCount}</p>
+              <div className="mt-4 grid gap-3 border-t border-stone-200 pt-4">
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-start justify-between gap-3 text-sm"
+                  >
+                    <span className="text-slate-600">
+                      {item.name} × {item.quantity}
+                    </span>
+                    <span className="font-semibold text-slate-950">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                ))}
+              </div>
               <p className="mt-4 text-sm text-slate-600">Total</p>
               <p className="text-3xl font-bold text-slate-950">
                 ${basketTotal.toFixed(2)}
@@ -106,9 +148,10 @@ export default function PaymentPage() {
                 <button
                   type="button"
                   onClick={handlePaymentSelection}
-                  className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:bg-stone-200 disabled:text-stone-500"
                 >
-                  Confirm Payment Method
+                  {isSubmitting ? "Creating Order..." : "Place Prototype Order"}
                 </button>
 
                 <Link
@@ -119,11 +162,10 @@ export default function PaymentPage() {
                 </Link>
               </div>
 
-              {message ? (
-                <p className="mt-4 rounded-md bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">
-                  {message}
-                </p>
-              ) : null}
+              <p className="mt-4 rounded-md bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">
+                Prototype only: this creates a local confirmation record and
+                does not process a real payment.
+              </p>
             </section>
           </div>
         )}

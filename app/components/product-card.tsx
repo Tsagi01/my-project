@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useSyncExternalStore } from "react";
 import type { Product } from "../data/products";
 import { useBasket } from "../context/basket-context";
 
@@ -11,6 +12,30 @@ const categoryStyles: Record<string, string> = {
   Software: "bg-cyan-50 text-cyan-800 ring-cyan-200",
   Hardware: "bg-indigo-50 text-indigo-800 ring-indigo-200",
 };
+
+function subscribeToCommentChanges(listener: () => void) {
+  window.addEventListener("storage", listener);
+
+  return () => {
+    window.removeEventListener("storage", listener);
+  };
+}
+
+function getCommentCount(productId: number) {
+  try {
+    const savedComments = window.localStorage.getItem(
+      `357-product-comments:${productId}`,
+    );
+    const parsedComments = savedComments ? JSON.parse(savedComments) : [];
+    return Array.isArray(parsedComments) ? parsedComments.length : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function getServerCommentCount() {
+  return 0;
+}
 
 export default function ProductCard({
   product,
@@ -25,6 +50,11 @@ export default function ProductCard({
   } = useBasket();
   const quantityInBasket = getItemQuantity(product.id);
   const hasReachedStockLimit = quantityInBasket >= product.stock;
+  const commentCount = useSyncExternalStore(
+    subscribeToCommentChanges,
+    () => getCommentCount(product.id),
+    getServerCommentCount,
+  );
 
   function handleDecrease() {
     if (quantityInBasket <= 1) {
@@ -44,13 +74,15 @@ export default function ProductCard({
             alt={product.imageAlt}
             width={800}
             height={600}
-            className="aspect-square w-full object-cover transition duration-200 group-hover:scale-[1.02]"
+            className="aspect-square w-full object-contain p-2 transition duration-200 group-hover:scale-[1.02]"
           />
         </Link>
       </div>
 
       <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-500">
-        <span>{product.commentCount} comments</span>
+        <span>
+          {commentCount === 1 ? "1 comment" : `${commentCount} comments`}
+        </span>
         <span>{product.stock} in stock</span>
       </div>
 

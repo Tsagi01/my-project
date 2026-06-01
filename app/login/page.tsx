@@ -34,11 +34,15 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             Student access keeps the catalogue, basket, and payment prototype
             inside a controlled coursework-style flow.
           </p>
+          <p className="mt-3 max-w-2xl text-sm font-semibold text-slate-500">
+            Prototype note: account details, baskets, comments, and order
+            confirmations are saved locally in this browser for demonstration.
+          </p>
         </div>
 
         <div className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
           <p className="text-sm font-semibold text-slate-950">Flow</p>
-          <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs font-semibold text-slate-600">
+          <div className="mt-3 grid grid-cols-4 gap-2 text-center text-xs font-semibold text-slate-600">
             <span className="rounded-md bg-blue-50 px-2 py-2 text-blue-700">
               Login
             </span>
@@ -47,6 +51,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </span>
             <span className="rounded-md bg-stone-100 px-2 py-2">
               Basket
+            </span>
+            <span className="rounded-md bg-stone-100 px-2 py-2">
+              Confirm
             </span>
           </div>
         </div>

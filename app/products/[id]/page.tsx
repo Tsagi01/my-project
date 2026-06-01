@@ -48,21 +48,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <span className="font-semibold text-slate-950">{product.name}</span>
         </nav>
 
-        <section className="grid gap-8 md:grid-cols-[minmax(260px,0.95fr)_minmax(280px,1.05fr)] md:items-start">
-          <div className="overflow-hidden rounded-md bg-stone-100 md:sticky md:top-6">
+        <section className="grid gap-8 md:grid-cols-[minmax(260px,0.9fr)_minmax(280px,1.1fr)] md:items-start">
+          <div className="overflow-hidden rounded-md border border-stone-200 bg-white md:sticky md:top-6">
             <Image
               src={product.image}
               alt={product.imageAlt}
               width={1000}
               height={1000}
-              className="aspect-[4/3] w-full object-cover"
+              className="aspect-square w-full object-contain p-5"
               priority
             />
           </div>
 
           <div>
-            <div className="text-sm font-semibold text-slate-500">
-              {product.commentCount} comments
+            <div className="flex flex-wrap gap-2 text-sm font-semibold">
+              <span className="rounded-full bg-blue-50 px-3 py-1 text-blue-800">
+                {product.category}
+              </span>
+              <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-700">
+                {product.stock} in stock
+              </span>
             </div>
 
             <h1 className="mt-3 text-4xl font-bold text-slate-950">
